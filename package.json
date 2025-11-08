@@ -2,7 +2,15 @@
   "name": "@markdown/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "prepare": "husky",
+    "commit": "cz"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
   "private": true,
   "dependencies": {
     "@nestjs/common": "^11.0.0",
@@ -16,6 +24,8 @@
     "rxjs": "^7.8.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^20.1.0",
+    "@commitlint/config-conventional": "^20.0.0",
     "@eslint/compat": "^1.1.1",
     "@eslint/eslintrc": "^2.1.1",
     "@eslint/js": "^9.8.0",
@@ -45,6 +55,8 @@
     "@types/react-dom": "^19.0.0",
     "autoprefixer": "10.4.13",
     "babel-jest": "^30.0.2",
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.8.0",
     "eslint-config-next": "^15.2.4",
     "eslint-config-prettier": "^10.0.0",
@@ -52,10 +64,12 @@
     "eslint-plugin-jsx-a11y": "6.10.1",
     "eslint-plugin-react": "7.35.0",
     "eslint-plugin-react-hooks": "5.0.0",
+    "husky": "^9.1.7",
     "jest": "^30.0.2",
     "jest-environment-jsdom": "^30.0.2",
     "jest-environment-node": "^30.0.2",
     "jest-util": "^30.0.2",
+    "lint-staged": "^16.2.6",
     "nx": "22.0.2",
     "postcss": "8.4.38",
     "prettier": "^2.6.2",
@@ -68,11 +82,16 @@
     "webpack-cli": "^5.1.4"
   },
   "workspaces": [
-    "apps/*",
-    "api",
-    "api-e2e",
     "frontend",
     "backend",
     "backend-e2e"
-  ]
+  ],
+  "lint-staged": {
+    "*.{ts,tsx,js,json,md}": [
+      "prettier --write"
+    ],
+    "*.{ts,tsx,js}": [
+      "eslint --fix"
+    ]
+  }
 }
