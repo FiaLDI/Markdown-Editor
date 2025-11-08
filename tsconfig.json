@@ -4,7 +4,13 @@
   "files": [],
   "references": [
     {
-      "path": "./apps/markdown"
+      "path": "./frontend"
+    },
+    {
+      "path": "./backend-e2e"
+    },
+    {
+      "path": "./backend"
     }
   ]
 }
