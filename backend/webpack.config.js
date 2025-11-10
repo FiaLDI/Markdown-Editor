@@ -1,9 +1,13 @@
-const { NxAppWebpackPlugin } = require('@nx/webpack/app-plugin');
-const { join } = require('path');
+const { NxAppWebpackPlugin } = require('@nx/webpack/app-plugin')
+const { join } = require('path')
 
 module.exports = {
   output: {
     path: join(__dirname, 'dist'),
+    externals: {
+      '@prisma/client': 'commonjs @prisma/client',
+      '.prisma/client': 'commonjs .prisma/client',
+    },
     clean: true,
     ...(process.env.NODE_ENV !== 'production' && {
       devtoolModuleFilenameTemplate: '[absolute-resource-path]',
@@ -22,4 +26,4 @@ module.exports = {
       sourceMaps: true,
     }),
   ],
-};
+}
