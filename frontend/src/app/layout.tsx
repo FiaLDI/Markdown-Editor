@@ -1,3 +1,4 @@
+import TitleBar from '@/components/TitleBar';
 import './global.css';
 
 export const metadata = {
@@ -12,7 +13,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      
+      <body className=' overflow-hidden'><TitleBar />
+      {children}
+      </body>
     </html>
   );
 }

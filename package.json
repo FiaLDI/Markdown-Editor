@@ -84,7 +84,8 @@
   "workspaces": [
     "frontend",
     "backend",
-    "backend-e2e"
+    "backend-e2e",
+    "desktop"
   ],
   "lint-staged": {
     "*.{ts,tsx,js,json,md}": [
