@@ -1,4 +1,5 @@
-import TitleBar from '@/components/TitleBar';
+
+import {TitleBar} from '@/widgets/TitleBar';
 import './global.css';
 
 export const metadata = {

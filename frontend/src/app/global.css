@@ -1,3 +1,119 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.scroll-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+/* --- Markdown --- */
+.prose {
+  @apply font-sans text-gray-100 leading-relaxed;
+}
+
+.prose h1,
+.prose h2,
+.prose h3 {
+  @apply border-b border-gray-700 pb-1 font-bold mt-6 mb-2;
+}
+
+.prose a {
+  @apply text-blue-500 hover:underline;
+}
+
+.prose ul,
+.prose ol {
+  @apply ml-6 my-2 space-y-1;
+}
+
+.prose li {
+  @apply mt-1;
+}
+
+.prose input[type="checkbox"] {
+  @apply accent-blue-500 w-4 h-4 cursor-pointer;
+}
+
+.prose code {
+  @apply bg-[#16181a] text-blue-300 px-1 py-0.5 rounded;
+}
+
+.prose code.inline-code {
+  @apply bg-gray-800 text-blue-300 px-1 py-0.5 rounded cursor-pointer;
+}
+
+.prose pre {
+  @apply rounded-lg p-0 overflow-x-auto relative;
+}
+
+.prose table {
+  @apply w-full border-collapse text-left text-sm ;
+}
+.prose th, .prose td {
+  @apply border border-gray-700  align-top;
+}
+.prose th {
+  @apply bg-[#16181a] font-semibold text-gray-100;
+}
+.prose tbody tr:nth-child(even) {
+  @apply bg-gray-800/40;
+}
+
+/* --- Copy Button --- */
+.copy-btn {
+  @apply z-20 absolute top-2 right-2 text-xs bg-gray-700 text-white px-2 py-1 rounded opacity-0 transition-opacity duration-200;
+}
+
+.group:hover .copy-btn {
+  @apply opacity-100;
+}
+
+/* --- Toast --- */
+.toast {
+  @apply fixed bottom-4 right-4 bg-green-600 text-white text-sm px-4 py-2 rounded shadow-lg animate-fade-in;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.2s ease-out;
+}
+
+/* === Кастомный скролл в стиле VSCode === */
+.custom-scrollbar {
+  @apply overflow-auto;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #3b3f46 #1f2329; /* цвет ползунка и трека */
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  @apply bg-[#1f2329] rounded-lg;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-[#3b3f46] rounded-lg border-2 border-[#1f2329];
+  transition: background-color 0.2s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  @apply bg-[#4e5661];
+}
+
+.custom-scrollbar::-webkit-scrollbar-corner {
+  @apply bg-transparent;
+}
+
