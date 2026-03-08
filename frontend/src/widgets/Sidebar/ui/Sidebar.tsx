@@ -1,37 +1,45 @@
 "use client";
 
-import { useState } from "react";
+import { useFolderTreeStore, useFolderUIStore } from "@/entities/folder";
 import { TreeNode } from "@/entities/folder/model/types";
 import { useOpenFileModel } from "@/features/file";
-import { useFolderStore } from "@/entities/folder";
 
 export const Sidebar = () => {
-  const root = useFolderStore((s) => s.root);
+  const tree = useFolderTreeStore((s) => s.tree);
+
+  const expandedFolders = useFolderUIStore((s) => s.expandedFolders);
+  const toggleFolder = useFolderUIStore((s) => s.toggleFolder);
+  const select = useFolderUIStore((s) => s.select);
+  const selected = useFolderUIStore((s) => s.selected);
+
   const { openFile } = useOpenFileModel();
-
-  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
-
-  const toggle = (path: string) =>
-    setExpanded((prev) => ({ ...prev, [path]: !prev[path] }));
 
   const renderNode = (node: TreeNode, level = 0) => {
     const isFolder = node.type === "folder";
+    const expanded = expandedFolders.includes(node.path);
+    const isSelected = selected === node.path;
 
     return (
       <div key={node.path}>
         <div
           style={{ paddingLeft: level * 12 }}
-          className="cursor-pointer hover:bg-gray-700 rounded px-2 py-1 flex items-center"
+          className={`cursor-pointer rounded px-2 py-1 flex items-center hover:bg-gray-700
+            ${isSelected ? "bg-gray-700" : ""}
+          `}
           onClick={() => {
-            if (isFolder) toggle(node.path);
-            else openFile(node.path);
+            if (isFolder) {
+              toggleFolder(node.path);
+            } else {
+              select(node.path);
+              openFile(node.path);
+            }
           }}
         >
-          {isFolder ? (expanded[node.path] ? "📂" : "📁") : "📄"} {node.name}
+          {isFolder ? (expanded ? "📂" : "📁") : "📄"} {node.name}
         </div>
 
         {isFolder &&
-          expanded[node.path] &&
+          expanded &&
           node.children.map((child) => renderNode(child, level + 1))}
       </div>
     );
@@ -39,7 +47,7 @@ export const Sidebar = () => {
 
   return (
     <aside className="w-72 bg-[#181e22] text-gray-200 h-full p-2 overflow-y-auto border-r border-gray-700">
-      {root && renderNode(root)}
+      {tree && renderNode(tree)}
     </aside>
   );
 };

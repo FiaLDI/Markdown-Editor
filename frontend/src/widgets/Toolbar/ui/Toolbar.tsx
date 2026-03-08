@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { useOpenFileModel } from "@/features/file";
 import { useContextMenu } from "@/shared/hooks/ContextMenu";
 import { AnimatedContextMenu } from "@/shared/ui/AnimatedContextMenu/AnimatedContextMenu";
-import { useFolderExplorer } from "@/features/folder-explorer/model/useFolderExplorer";
+import { useFolderExplorer } from "@/features/folder";
 
 export const ToolBar = () => {
   const { activePath, openFileInWindow, handleSaveFile, handleSaveFileAs, lastSaved } =

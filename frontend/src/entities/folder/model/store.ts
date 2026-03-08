@@ -1,28 +1,36 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { FolderNode } from "./types";
 
-interface FolderStore {
-  root?: FolderNode;
+interface FolderUIStore {
   currentPath?: string;
+  expandedFolders: string[];
+  selected?: string;
 
-  setTree: (tree: FolderNode, path: string) => void;
+  setCurrentPath: (path: string) => void;
+  toggleFolder: (path: string) => void;
+  select: (path: string) => void;
 }
 
-export const useFolderStore = create<FolderStore>()(
+export const useFolderUIStore = create<FolderUIStore>()(
   persist(
     (set) => ({
-      root: undefined,
       currentPath: undefined,
+      expandedFolders: [],
+      selected: undefined,
 
-      setTree: (tree, path) =>
-        set({
-          root: tree,
-          currentPath: path,
-        }),
+      setCurrentPath: (path) => set({ currentPath: path }),
+
+      toggleFolder: (path) =>
+        set((state) => ({
+          expandedFolders: state.expandedFolders.includes(path)
+            ? state.expandedFolders.filter((p) => p !== path)
+            : [...state.expandedFolders, path],
+        })),
+
+      select: (path) => set({ selected: path }),
     }),
     {
-      name: "folder-store",
+      name: "folder-ui-store",
     }
   )
 );

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useFileStore } from "@/entities/file/model/store";
 import { useTabStore } from "@/entities/tabs/model/store";
 import { safeInvoke } from "@/shared/lib/tauri/tauriClient";
-import { open, save } from "@tauri-apps/plugin-dialog";
+import { getDialog } from "@/shared/lib/tauri/dialog/dialog.service";
 
 export const useOpenFileModel = () => {
   const { files, setFile, updateContent, markSaved } = useFileStore();
@@ -13,12 +13,13 @@ export const useOpenFileModel = () => {
   const activeFile = activePath ? files[activePath] : undefined;
   const content = activeFile?.content || "";
 
+  const dialog = getDialog();
+
   const openFileInWindow = async () => {
-    const selected = await open({
-      title: "Открыть Markdown-файл",
-      multiple: false,
-      filters: [{ name: "Markdown", extensions: ["md", "txt"] }],
-    });
+    const selected = await dialog.readPath(
+      "Открыть Markdown-файл",
+      false
+    );
 
     if (!selected || Array.isArray(selected)) return;
 
@@ -52,7 +53,7 @@ export const useOpenFileModel = () => {
   const handleSaveFileAs = async () => {
     if (!activeFile) return;
 
-    const newPath = await save({
+    const newPath = await dialog.saveAs({
       title: "Сохранить как...",
       filters: [{ name: "Markdown", extensions: ["md"] }],
       defaultPath: activeFile.path ?? "new-file.md",

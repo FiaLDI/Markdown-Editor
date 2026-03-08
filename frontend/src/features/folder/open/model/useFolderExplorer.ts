@@ -1,19 +1,19 @@
-import { useFolderStore } from "@/entities/folder/model/store";
-import { buildTree } from "@/entities/folder/lib/buildTree";
-import { readDir } from "@tauri-apps/plugin-fs";
-import { open } from "@tauri-apps/plugin-dialog";
 
-interface FileEntry {
-  name: string;
-  path: string;
-  isDir: boolean;
-}
+import { buildTree } from "@/entities/folder/lib/buildTree";
+import { useFolderTreeStore, useFolderUIStore } from "@/entities/folder";
+import { FileEntry } from "@/entities/folder/model/types";
+import { getFS } from "@/shared/lib/tauri/fs/fs.service";
+import { getDialog } from "@/shared/lib/tauri/dialog/dialog.service";
 
 export const useFolderExplorer = () => {
-  const { setTree } = useFolderStore();
+  const { setTree } = useFolderTreeStore();
+  const { setCurrentPath } = useFolderUIStore();
+
+  const fs = getFS();
+  const dialog = getDialog();
 
   const scanFolder = async (dirPath: string): Promise<FileEntry[]> => {
-    const entries = await readDir(dirPath);
+    const entries = await fs.readDir(dirPath);
     const result: FileEntry[] = [];
 
     for (const e of entries) {
@@ -38,7 +38,9 @@ export const useFolderExplorer = () => {
     try {
       const allEntries = await scanFolder(path);
       const tree = buildTree(allEntries, path);
-      setTree(tree, path);
+
+      setTree(tree);
+      setCurrentPath(path);
 
     } catch (err) {
       console.error("Ошибка при чтении папки:", err);
@@ -47,10 +49,10 @@ export const useFolderExplorer = () => {
 
   const openFolderInWindow = async () => {
     try {
-      const path = await open({
-        title: "Выберите папку проекта",
-        directory: true,
-      });
+      const path = await dialog.readPath(
+        "Выберите папку проекта",
+        true
+      );
 
       if (!path || Array.isArray(path)) return;
 
