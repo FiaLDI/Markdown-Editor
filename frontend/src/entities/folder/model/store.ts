@@ -9,11 +9,12 @@ interface FolderUIStore {
   setCurrentPath: (path: string) => void;
   toggleFolder: (path: string) => void;
   select: (path: string) => void;
+  rename: (path: string) => void;
 }
 
 export const useFolderUIStore = create<FolderUIStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       currentPath: undefined,
       expandedFolders: [],
       selected: undefined,
@@ -28,6 +29,14 @@ export const useFolderUIStore = create<FolderUIStore>()(
         })),
 
       select: (path) => set({ selected: path }),
+      
+      rename: (path) => {
+        const currentPath = get().currentPath;
+
+        if(currentPath == path) {
+          set({currentPath: path})
+        }
+      }
     }),
     {
       name: "folder-ui-store",

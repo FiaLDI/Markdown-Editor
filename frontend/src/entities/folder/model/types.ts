@@ -1,19 +1,19 @@
+interface BaseNode {
+  name: string;
+  path: string;
+}
+
 export interface FileEntry {
   name: string
   path: string
   isDir: boolean
 }
-
-export interface FileNode {
+export interface FileNode extends BaseNode {
   type: "file";
-  name: string;
-  path: string;
 }
 
-export interface FolderNode {
+export interface FolderNode extends BaseNode {
   type: "folder";
-  name: string;
-  path: string;
   children: TreeNode[];
 }
 
