@@ -8,10 +8,22 @@
     "dialog:allow-open",
     "dialog:allow-save",
     "dialog:default",
-    "fs:allow-read",
-    "fs:allow-read-dir",
-    "fs:allow-write",
+
+    {
+      "identifier": "fs:allow-read",
+      "allow": [{ "path": "**" }]
+    },
+    {
+      "identifier": "fs:allow-read-dir",
+      "allow": [{ "path": "**" }]
+    },
+    {
+      "identifier": "fs:allow-write",
+      "allow": [{ "path": "**" }]
+    },
+
     "fs:allow-app-write",
+
     "core:window:allow-minimize",
     "core:window:allow-toggle-maximize",
     "core:window:allow-close",

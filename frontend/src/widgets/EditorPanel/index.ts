@@ -1,1 +1,1 @@
-export * from "./ui/EditorPanel"
+export * from "./ui/EditorPanel";

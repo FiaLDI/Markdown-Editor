@@ -1,24 +1,28 @@
-import { createStore } from "@/shared/lib/store/createStore";
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import { FolderNode } from "./types";
 
-export interface FileEntry {
-  name: string;
-  path: string;
-  isDir: boolean;
-}
-
-interface FolderState {
+interface FolderStore {
+  root?: FolderNode;
   currentPath?: string;
-  entries: FileEntry[];
-  setCurrentPath: (p: string) => void;
-  setEntries: (e: FileEntry[]) => void;
+
+  setTree: (tree: FolderNode, path: string) => void;
 }
 
-export const useFolderStore = createStore<FolderState>(
-  (set) => ({
-    currentPath: undefined,
-    entries: [],
-    setCurrentPath: (p) => set({ currentPath: p }),
-    setEntries: (e) => set({ entries: e }),
-  }),
-  "folder-store"
+export const useFolderStore = create<FolderStore>()(
+  persist(
+    (set) => ({
+      root: undefined,
+      currentPath: undefined,
+
+      setTree: (tree, path) =>
+        set({
+          root: tree,
+          currentPath: path,
+        }),
+    }),
+    {
+      name: "folder-store",
+    }
+  )
 );

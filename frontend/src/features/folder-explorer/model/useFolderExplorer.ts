@@ -1,4 +1,5 @@
 import { useFolderStore } from "@/entities/folder/model/store";
+import { buildTree } from "@/entities/folder/lib/buildTree";
 import { readDir } from "@tauri-apps/plugin-fs";
 import { open } from "@tauri-apps/plugin-dialog";
 
@@ -9,7 +10,7 @@ interface FileEntry {
 }
 
 export const useFolderExplorer = () => {
-  const { setEntries, setCurrentPath } = useFolderStore();
+  const { setTree } = useFolderStore();
 
   const scanFolder = async (dirPath: string): Promise<FileEntry[]> => {
     const entries = await readDir(dirPath);
@@ -17,6 +18,7 @@ export const useFolderExplorer = () => {
 
     for (const e of entries) {
       const fullPath = `${dirPath}/${e.name}`;
+
       result.push({
         name: e.name ?? "",
         path: fullPath,
@@ -35,8 +37,9 @@ export const useFolderExplorer = () => {
   const openFolder = async (path: string) => {
     try {
       const allEntries = await scanFolder(path);
-      setEntries(allEntries);
-      setCurrentPath(path);
+      const tree = buildTree(allEntries, path);
+      setTree(tree, path);
+
     } catch (err) {
       console.error("Ошибка при чтении папки:", err);
     }
@@ -48,8 +51,11 @@ export const useFolderExplorer = () => {
         title: "Выберите папку проекта",
         directory: true,
       });
+
       if (!path || Array.isArray(path)) return;
+
       await openFolder(path);
+
     } catch (err) {
       console.error("Ошибка при открытии папки:", err);
     }

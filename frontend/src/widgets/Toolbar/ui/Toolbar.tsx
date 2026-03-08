@@ -2,7 +2,7 @@
 
 import { Menu } from "lucide-react";
 import { motion } from "framer-motion";
-import { useOpenFileModel } from "@/features/open-file/model/useOpenFileModel";
+import { useOpenFileModel } from "@/features/file";
 import { useContextMenu } from "@/shared/hooks/ContextMenu";
 import { AnimatedContextMenu } from "@/shared/ui/AnimatedContextMenu/AnimatedContextMenu";
 import { useFolderExplorer } from "@/features/folder-explorer/model/useFolderExplorer";

@@ -3,16 +3,9 @@ import { useEffect, useState } from "react";
 import { WebviewWindow } from "@tauri-apps/api/webviewWindow";
 import { AppWindow, Minus, X } from "lucide-react";
 import { ToolBar } from "@/widgets/Toolbar";
-import { useFileStore } from "@/entities/file/model/store";
 
 export const TitleBar = () => {
   const [win, setWin] = useState<WebviewWindow | null>(null);
-
-  const hydrate = useFileStore((s) => s.hydrate);
-  
-    useEffect(() => {
-      hydrate();
-    }, [hydrate]);
 
   useEffect(() => {
     (async () => {

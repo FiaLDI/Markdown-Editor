@@ -1,75 +1,90 @@
-import { create } from "zustand";
+// entities/file/model/file.store.ts
 
-interface OpenFile {
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+
+export interface File {
   path: string;
   content: string;
   savedContent: string;
 }
 
 interface FileStore {
-  openFiles: OpenFile[];
-  activePath?: string;
-  setActive: (path: string) => void;
-  openFile: (path: string, content?: string) => void;
+  files: Record<string, File>;
+
+  setFile: (path: string, content: string) => void;
   updateContent: (path: string, content: string) => void;
-  closeFile: (path: string) => void;
   markSaved: (path: string) => void;
-  hydrate: () => void;
+  removeFile: (path: string) => void;
+  getFile: (path: string) => File | undefined;
 }
 
-export const useFileStore = create<FileStore>((set, get) => ({
-  openFiles: [],
-  activePath: undefined,
+export const useFileStore = create<FileStore>()(
+  persist(
+    (set, get) => ({
+      files: {},
 
-  hydrate: () => {
-    if (typeof window === "undefined") return;
-    const openFiles = JSON.parse(localStorage.getItem("openFiles") || "[]");
-    const activePath = localStorage.getItem("activePath") || undefined;
-    set({ openFiles, activePath });
-  },
+      setFile: (path, content) => {
+        set((state) => ({
+          files: {
+            ...state.files,
+            [path]: {
+              path,
+              content,
+              savedContent: content,
+            },
+          },
+        }));
+      },
 
-  setActive: (path) => {
-    if (typeof window !== "undefined") localStorage.setItem("activePath", path);
-    set({ activePath: path });
-  },
+      updateContent: (path, content) => {
+        set((state) => {
+          const file = state.files[path];
+          if (!file) return state;
 
-  openFile: (path, content = "") => {
-    const existing = get().openFiles.find((f) => f.path === path);
-    const updated = existing
-      ? get().openFiles
-      : [...get().openFiles, { path, content, savedContent: content }];
+          return {
+            files: {
+              ...state.files,
+              [path]: {
+                ...file,
+                content,
+              },
+            },
+          };
+        });
+      },
 
-    localStorage.setItem("openFiles", JSON.stringify(updated));
-    localStorage.setItem("activePath", path);
-    set({ openFiles: updated, activePath: path });
-  },
+      markSaved: (path) => {
+        set((state) => {
+          const file = state.files[path];
+          if (!file) return state;
 
-  updateContent: (path, content) => {
-    const updated = get().openFiles.map((f) =>
-      f.path === path ? { ...f, content } : f
-    );
-    if (typeof window !== "undefined")
-      localStorage.setItem("openFiles", JSON.stringify(updated));
-    set({ openFiles: updated });
-  },
+          return {
+            files: {
+              ...state.files,
+              [path]: {
+                ...file,
+                savedContent: file.content,
+              },
+            },
+          };
+        });
+      },
 
-  closeFile: (path) => {
-    const updated = get().openFiles.filter((f) => f.path !== path);
-    const nextActive =
-      get().activePath === path ? updated[0]?.path : get().activePath;
-    if (typeof window !== "undefined") {
-      localStorage.setItem("openFiles", JSON.stringify(updated));
-      localStorage.setItem("activePath", nextActive || "");
+      removeFile: (path) => {
+        set((state) => {
+          const updated = { ...state.files };
+          delete updated[path];
+          return { files: updated };
+        });
+      },
+
+      getFile: (path) => {
+        return get().files[path];
+      },
+    }),
+    {
+      name: "files-store",
     }
-    set({ openFiles: updated, activePath: nextActive });
-  },
-
-  markSaved: (path) => {
-    const updated = get().openFiles.map((f) =>
-      f.path === path ? { ...f, savedContent: f.content } : f
-    );
-    if (typeof window !== "undefined")
-      localStorage.setItem("openFiles", JSON.stringify(updated));
-    set({ openFiles: updated });
-  },
-}));
+  )
+);
