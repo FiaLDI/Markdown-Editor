@@ -2,7 +2,7 @@
 
 import { useFolderTreeStore, useFolderUIStore } from "@/entities/folder";
 import { TreeNode } from "@/entities/folder/model/types";
-import { useOpenFileModel } from "@/features/file";
+import { useOpenFile } from "@/features/file";
 
 export const Sidebar = () => {
   const tree = useFolderTreeStore((s) => s.tree);
@@ -12,7 +12,7 @@ export const Sidebar = () => {
   const select = useFolderUIStore((s) => s.select);
   const selected = useFolderUIStore((s) => s.selected);
 
-  const { openFile } = useOpenFileModel();
+  const { openFile } = useOpenFile();
 
   const renderNode = (node: TreeNode, level = 0) => {
     const isFolder = node.type === "folder";

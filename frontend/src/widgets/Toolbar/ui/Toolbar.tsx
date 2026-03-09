@@ -2,14 +2,19 @@
 
 import { Menu } from "lucide-react";
 import { motion } from "framer-motion";
-import { useOpenFileModel } from "@/features/file";
+import { useOpenFile } from "@/features/file";
 import { useContextMenu } from "@/shared/hooks/ContextMenu";
 import { AnimatedContextMenu } from "@/shared/ui/AnimatedContextMenu/AnimatedContextMenu";
 import { useFolderExplorer } from "@/features/folder";
 
 export const ToolBar = () => {
-  const { activePath, openFileInWindow, handleSaveFile, handleSaveFileAs, lastSaved } =
-    useOpenFileModel();
+  const { 
+    activePath, 
+    openFileInWindow, 
+    handleSaveFile, 
+    handleSaveFileAs, 
+    lastSaved 
+  } = useOpenFile();
 
   const { openFolderInWindow } = useFolderExplorer();
 

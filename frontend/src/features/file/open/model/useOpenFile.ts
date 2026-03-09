@@ -4,7 +4,7 @@ import { useTabStore } from "@/entities/tabs/model/store";
 import { safeInvoke } from "@/shared/lib/tauri/tauriClient";
 import { getDialog } from "@/shared/lib/tauri/dialog/dialog.service";
 
-export const useOpenFileModel = () => {
+export const useOpenFile = () => {
   const { files, setFile, updateContent, markSaved } = useFileStore();
   const { activePath, openTab, setActive } = useTabStore();
 

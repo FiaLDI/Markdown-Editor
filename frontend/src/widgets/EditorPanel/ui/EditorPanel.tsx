@@ -1,11 +1,11 @@
 "use client";
 
-import { useOpenFileModel } from "@/features/file";
+import { useOpenFile } from "@/features/file";
 import { parse } from "@/shared/lib/markdown/parse";
 import { useMemo } from "react";
 
 export const EditorPanel = () => {
-    const { content, updateContent, activePath } = useOpenFileModel();
+    const { content, updateContent, activePath } = useOpenFile();
     const html = useMemo(() => parse(content), [content]);
 
     return (

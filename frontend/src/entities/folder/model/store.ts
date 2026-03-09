@@ -36,7 +36,7 @@ export const useFolderUIStore = create<FolderUIStore>()(
         if(currentPath == path) {
           set({currentPath: path})
         }
-      }
+      },
     }),
     {
       name: "folder-ui-store",
