@@ -3,9 +3,8 @@
 import { Menu } from "lucide-react";
 import { motion } from "framer-motion";
 import { useOpenFile } from "@/features/file";
-import { useContextMenu } from "@/shared/hooks/ContextMenu";
-import { AnimatedContextMenu } from "@/shared/ui/AnimatedContextMenu/AnimatedContextMenu";
 import { useFolderExplorer } from "@/features/folder";
+import { AnimatedContextMenu, useContextMenu } from "@/shared/ui/ContextMenu";
 
 export const ToolBar = () => {
   const { 

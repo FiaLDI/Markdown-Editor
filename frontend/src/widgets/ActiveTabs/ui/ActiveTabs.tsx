@@ -1,7 +1,7 @@
 "use client";
 
-import { AnimatedContextMenu } from "@/shared/ui/AnimatedContextMenu/AnimatedContextMenu";
 import { useActiveTabs } from "../model/useActiveTabs";
+import { TabsContextMenu } from "@/features/tabs";
 
 export const ActiveTabs = () => {
   const { 
@@ -10,8 +10,7 @@ export const ActiveTabs = () => {
     menuRef, 
     closeMenu, 
     tabs, 
-    files, 
-    activePath, 
+    isModify, 
     handleContextMenu, 
     setActive, 
     closeTab
@@ -21,29 +20,21 @@ export const ActiveTabs = () => {
     <>
       <div className="flex bg-[#1c2125] border-b border-gray-700">
         {tabs.map((tab) => {
-          const file = files[tab.path];
-          const isActive = tab.path === activePath;
-
-          const name = tab.path.split(/[\\/]/).pop() ?? tab.path;
-
-          const isModified =
-            file && file.content !== file.savedContent;
-
           return (
             <div
               key={tab.path}
               onContextMenu={(e) => handleContextMenu(e, tab.path)}
               className={`flex items-center px-3 py-1 cursor-pointer select-none border-r border-gray-700 
                 ${
-                  isActive
+                  tab.isActive
                     ? "bg-[#23292d] text-white"
                     : "bg-[#1c2125]/60 text-gray-400 hover:bg-gray-700"
                 }`}
               onClick={() => setActive(tab.path)}
             >
               <span className="mr-2 whitespace-nowrap">
-                {name}
-                {isModified && (
+                {tab.name}
+                {isModify(tab.path) && (
                   <span className="text-yellow-400">*</span>
                 )}
               </span>
@@ -62,14 +53,12 @@ export const ActiveTabs = () => {
         })}
       </div>
 
-      {contextMenu && (
-        <AnimatedContextMenu
-          visible
-          x={contextMenu.x}
-          y={contextMenu.y}
-          items={contextItems!}
-          menuRef={menuRef as any}
-          onClose={closeMenu}
+      {contextMenu && contextItems && (
+        <TabsContextMenu 
+          contextMenu={contextMenu} 
+          menuRef={menuRef} 
+          contextItems={contextItems} 
+          closeMenu={closeMenu} 
         />
       )}
     </>

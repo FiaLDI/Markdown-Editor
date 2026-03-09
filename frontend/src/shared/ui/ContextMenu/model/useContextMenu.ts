@@ -1,12 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react";
-
-export interface ContextMenuPosition<T> {
-    x: number;
-    y: number;
-    data: T;
-}
+import { ContextMenuPosition } from "./types";
 
 export function useContextMenu<T, E extends HTMLElement = HTMLUListElement>() {
     const [contextMenu, setContextMenu] = useState<ContextMenuPosition<T> | null>(null);

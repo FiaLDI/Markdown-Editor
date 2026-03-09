@@ -8,6 +8,7 @@ export const useOpenFile = () => {
   const { files, setFile, updateContent, markSaved } = useFileStore();
   const { activePath, openTab, setActive } = useTabStore();
 
+  // signal on save
   const [lastSaved, setLastSaved] = useState<string | null>(null);
 
   const activeFile = activePath ? files[activePath] : undefined;
@@ -24,16 +25,18 @@ export const useOpenFile = () => {
     if (!selected || Array.isArray(selected)) return;
 
     const data = await safeInvoke<string>("open_file", { path: selected });
+    const name = selected.split(/[\\/]/).pop() ?? "";
 
     setFile(selected, data || "");
-    openTab(selected);
+    openTab(name, selected);
   };
 
   const openFileByPath = async (path: string) => {
     const data = await safeInvoke<string>("open_file", { path });
+    const name = path.split(/[\\/]/).pop() ?? "";
 
     setFile(path, data || "");
-    openTab(path);
+    openTab(name, path);
   };
 
   const handleSaveFile = async () => {
@@ -61,19 +64,22 @@ export const useOpenFile = () => {
 
     if (!newPath) return;
 
+    const newName = newPath.split(/[\\/]/).pop() ?? "";
+
     await safeInvoke("save_file", {
       path: newPath,
       data: content,
     });
 
     setFile(newPath, content);
-    openTab(newPath);
+    openTab(newName, newPath);
     markSaved(newPath);
 
     setLastSaved("💾 Сохранено как новый");
     setTimeout(() => setLastSaved(null), 3000);
   };
 
+  // AUTOSAVE
   useEffect(() => {
     if (!activePath) return;
 

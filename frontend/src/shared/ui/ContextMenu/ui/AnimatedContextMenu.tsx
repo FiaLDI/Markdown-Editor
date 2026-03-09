@@ -2,24 +2,7 @@
 
 import React, { useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
-interface ContextMenuItem {
-  label: string;
-  action: () => void;
-  icon?: React.ReactNode;
-  danger?: boolean;
-  disabled?: boolean;
-}
-
-interface AnimatedContextMenuProps {
-  visible: boolean;
-  x: number;
-  y: number;
-  items: ContextMenuItem[];
-  menuRef: React.RefObject<HTMLElement>;
-  onClose: () => void;
-}
-
+import { AnimatedContextMenuProps } from "../model/types";
 export const AnimatedContextMenu: React.FC<AnimatedContextMenuProps> = ({
   visible,
   x,

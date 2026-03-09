@@ -10,6 +10,7 @@ interface FolderUIStore {
   toggleFolder: (path: string) => void;
   select: (path: string) => void;
   rename: (path: string) => void;
+  delete: (path: string) => void;
 }
 
 export const useFolderUIStore = create<FolderUIStore>()(
@@ -36,6 +37,10 @@ export const useFolderUIStore = create<FolderUIStore>()(
         if(currentPath == path) {
           set({currentPath: path})
         }
+      },
+
+      delete(name) {
+          set({expandedFolders: get().expandedFolders.filter(val => val != name)})
       },
     }),
     {
