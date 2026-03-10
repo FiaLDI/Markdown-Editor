@@ -4,7 +4,7 @@ import { memo } from "react";
 import { useTreeNodeModel } from "../model/useTreeNodeModel";
 import { TreeNodeProps } from "../model/types";
 
-export const TreeNode = memo(({ node, level = 0 }: TreeNodeProps) => {
+export const TreeNode = memo(({ node, level = 0, handleContextMenu }: TreeNodeProps) => {
   
   const {isSelected, isFolder, toggleFolder, select, openFile, expanded} = useTreeNodeModel({node, level});
 
@@ -22,6 +22,7 @@ export const TreeNode = memo(({ node, level = 0 }: TreeNodeProps) => {
             openFile(node.path);
           }
         }}
+        onContextMenu={(e) => {if(handleContextMenu) handleContextMenu(e, node.path)}}
       >
         {isFolder ? (expanded ? "📂" : "📁") : "📄"} {node.name}
       </div>
@@ -30,7 +31,7 @@ export const TreeNode = memo(({ node, level = 0 }: TreeNodeProps) => {
         expanded &&
         node.type == "folder" &&
         node.children.map((child) => (
-          <TreeNode key={child.path} node={child} level={level + 1} />
+          <TreeNode key={child.path} node={child} level={level + 1} handleContextMenu={handleContextMenu} />
         ))}
     </div>
   );

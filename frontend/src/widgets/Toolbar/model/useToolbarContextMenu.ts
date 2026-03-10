@@ -23,11 +23,11 @@ export const useToolbarContextMenu = () => {
 
     const items = [
         { label: "Создать новый файл", action: ()=>{} },
-        { label: "📂 Открыть папку", action: openFolderInWindow },
-        { label: "📂 Открыть файл", action: openFileInWindow },
-        { label: "💾 Сохранить", action: handleSaveFile, disabled: !activePath },
-        { label: "📁 Сохранить как", action: handleSaveFileAs, disabled: !activePath },
-    ];
+        { label: "Открыть папку", action: openFolderInWindow },
+        { label: "Открыть файл", action: openFileInWindow },
+        { label: "Сохранить", action: handleSaveFile, disabled: !activePath },
+        { label: "Сохранить как", action: handleSaveFileAs, disabled: !activePath },
+    ];  
 
     return {
         contextMenu,
