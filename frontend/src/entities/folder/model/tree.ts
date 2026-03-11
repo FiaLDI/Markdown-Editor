@@ -11,7 +11,7 @@ interface FolderTreeStore {
   renameTree: (path: string, newName: string) => void;
   deleteTreeNode: (path: string) => void;
   
-  createTreeNode: (path: string, name: string) => void;
+  createTreeNode: (path: string, name: string, type: "folder" | "file") => void;
 }
 
 export const useFolderTreeStore = create<FolderTreeStore>((set) => ({
@@ -37,11 +37,11 @@ export const useFolderTreeStore = create<FolderTreeStore>((set) => ({
       };
     }),
 
-  createTreeNode: (path, name) => 
+  createTreeNode: (path, name, type) => 
     set((state) => {
       if (!state.tree) return state;
       return {
-        tree: createNode(state.tree, path, name) as FolderNode,
+        tree: createNode(state.tree, path, name, type) as FolderNode,
       }
     })
 }));

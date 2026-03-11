@@ -1,11 +1,7 @@
-// entities/folder/lib/buildTree.ts
+import { readDir, DirEntry } from "@tauri-apps/plugin-fs";
+import { FolderNode } from "../model/types";
 
-import { FileEntry, FolderNode } from "../model/types";
-
-export const buildTree = (
-  entries: FileEntry[],
-  rootPath: string
-): FolderNode => {
+export const buildTree = async (rootPath: string): Promise<FolderNode> => {
   const root: FolderNode = {
     type: "folder",
     name: rootPath.split(/[\\/]/).pop() || rootPath,
@@ -13,35 +9,34 @@ export const buildTree = (
     children: [],
   };
 
-  const map = new Map<string, FolderNode>();
-  map.set(rootPath, root);
+  const build = async (dirPath: string, parent: FolderNode) => {
+    const entries: DirEntry[] = await readDir(dirPath);
 
-  for (const entry of entries) {
-    const parentPath =
-      entry.path.substring(0, entry.path.lastIndexOf("/")) || rootPath;
+    for (const entry of entries) {
+      const fullPath = `${dirPath}/${entry.name}`;
 
-    const parent = map.get(parentPath);
+      if (entry.isDirectory) {
+        const folder: FolderNode = {
+          type: "folder",
+          name: entry.name,
+          path: fullPath,
+          children: [],
+        };
 
-    if (!parent) continue;
+        parent.children.push(folder);
 
-    if (entry.isDir) {
-      const folder: FolderNode = {
-        type: "folder",
-        name: entry.name,
-        path: entry.path,
-        children: [],
-      };
-
-      parent.children.push(folder);
-      map.set(entry.path, folder);
-    } else {
-      parent.children.push({
-        type: "file",
-        name: entry.name,
-        path: entry.path,
-      });
+        await build(fullPath, folder);
+      } else {
+        parent.children.push({
+          type: "file",
+          name: entry.name,
+          path: fullPath,
+        });
+      }
     }
-  }
+  };
+
+  await build(rootPath, root);
 
   return root;
 };

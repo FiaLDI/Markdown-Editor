@@ -10,7 +10,7 @@ export const useToolbarContextMenu = () => {
         handleSaveFile, 
         handleSaveFileAs, 
         lastSaved
-      } = useOpenFile();
+    } = useOpenFile();
       
     const { openFolderInWindow } = useFolderExplorer();
 
