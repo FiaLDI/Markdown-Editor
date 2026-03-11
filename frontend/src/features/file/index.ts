@@ -1,1 +1,1 @@
-export * from "./open-file/model/useOpenFileModel";
+export * from "./open";

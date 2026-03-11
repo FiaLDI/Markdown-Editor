@@ -1,20 +1,6 @@
-// entities/tab/model/tab.store.ts
-
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-export interface Tab {
-  path: string;
-}
-
-interface TabStore {
-  tabs: Tab[];
-  activePath?: string;
-
-  openTab: (path: string) => void;
-  closeTab: (path: string) => void;
-  setActive: (path: string) => void;
-}
+import { TabStore } from "./types";
 
 export const useTabStore = create<TabStore>()(
   persist(
@@ -22,10 +8,10 @@ export const useTabStore = create<TabStore>()(
       tabs: [],
       activePath: undefined,
 
-      openTab: (path) => {
+      openTab: (name, path) => {
         const exists = get().tabs.find((t) => t.path === path);
 
-        const updated = exists ? get().tabs : [...get().tabs, { path }];
+        const updated = exists ? get().tabs : [...get().tabs, { name, path, isActive: true }];
 
         set({
           tabs: updated,

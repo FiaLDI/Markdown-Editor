@@ -1,45 +1,39 @@
 "use client";
 
-import { useState } from "react";
-import { TreeNode } from "@/entities/folder/model/types";
-import { useOpenFileModel } from "@/features/file";
-import { useFolderStore } from "@/entities/folder";
+import { useFolderTreeStore } from "@/entities/folder";
+import { TreeNode } from "./TreeNode";
+import { AnimatedContextMenu } from "@/shared/ui/ContextMenu";
+import { useSidebarContextMenu } from "../model/useSidebarContextMenu";
+import { useFileWatcher } from "../model/useFileWatcher";
+import { useRestoreWorkspace } from "../model/useRestoreWorkspace";
 
 export const Sidebar = () => {
-  const root = useFolderStore((s) => s.root);
-  const { openFile } = useOpenFileModel();
+  const tree = useFolderTreeStore((s) => s.tree);
+  const {contextMenu, items, menuRef, closeMenu, handleContextMenu} = useSidebarContextMenu();
+  useRestoreWorkspace();
 
-  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+  useFileWatcher(tree?.path);
 
-  const toggle = (path: string) =>
-    setExpanded((prev) => ({ ...prev, [path]: !prev[path] }));
-
-  const renderNode = (node: TreeNode, level = 0) => {
-    const isFolder = node.type === "folder";
-
-    return (
-      <div key={node.path}>
-        <div
-          style={{ paddingLeft: level * 12 }}
-          className="cursor-pointer hover:bg-gray-700 rounded px-2 py-1 flex items-center"
-          onClick={() => {
-            if (isFolder) toggle(node.path);
-            else openFile(node.path);
-          }}
-        >
-          {isFolder ? (expanded[node.path] ? "📂" : "📁") : "📄"} {node.name}
-        </div>
-
-        {isFolder &&
-          expanded[node.path] &&
-          node.children.map((child) => renderNode(child, level + 1))}
-      </div>
-    );
-  };
+  if (!tree) return null;
 
   return (
-    <aside className="w-72 bg-[#181e22] text-gray-200 h-full p-2 overflow-y-auto border-r border-gray-700">
-      {root && renderNode(root)}
+    <aside 
+      onContextMenu={(e) => {
+        e.stopPropagation();
+        handleContextMenu(e, tree.path);
+      }}
+      className="w-72 bg-[#181e22] text-gray-200 h-full p-2 overflow-y-auto border-r border-gray-700"
+    >
+      <TreeNode node={tree} handleContextMenu={handleContextMenu} />
+
+      <AnimatedContextMenu
+        visible={!!contextMenu}
+        x={contextMenu?.x || 0}
+        y={contextMenu?.y || 0}
+        items={items}
+        menuRef={menuRef as unknown as React.RefObject<HTMLElement>}
+        onClose={closeMenu}
+      />
     </aside>
   );
 };
