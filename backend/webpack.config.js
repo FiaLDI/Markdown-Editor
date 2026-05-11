@@ -3,16 +3,16 @@ const { join } = require('path')
 
 module.exports = {
   output: {
-    path: join(__dirname, 'dist'),
-    externals: {
-      '@prisma/client': 'commonjs @prisma/client',
-      '.prisma/client': 'commonjs .prisma/client',
-    },
+    path: join(__dirname, 'dist'), 
     clean: true,
     ...(process.env.NODE_ENV !== 'production' && {
       devtoolModuleFilenameTemplate: '[absolute-resource-path]',
     }),
   },
+  externals: {
+      '@prisma/client': 'commonjs @prisma/client',
+      '.prisma/client': 'commonjs .prisma/client',
+    },
   plugins: [
     new NxAppWebpackPlugin({
       target: 'node',

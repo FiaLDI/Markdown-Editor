@@ -1,13 +1,18 @@
-import { AuthModule } from '@/modules/auth';
-import { Controller, Get } from '@nestjs/common';
+import { AuthMeService } from '@/modules/auth/application/auth.me.service';
+import { Controller, Get, Post } from '@nestjs/common';
 
 
 @Controller('auth')
-export class AuthController {
-  constructor(private readonly appService: AuthModule) {}
+export class LoginController {
+  constructor(private readonly authMeService: AuthMeService) {}
 
   @Get()
   getData() {
-    return "this.appService.getData()";
+    return this.authMeService.getMe();
+  }
+
+  @Post()
+  login() {
+      return { message: 'Login endpoint' };
   }
 }

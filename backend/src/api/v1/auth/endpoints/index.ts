@@ -1,5 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
-import { AuthModule } from '../../../../modules/auth/application';
+import { LoginController } from './login.endpoint';
 
 export const authV1Endpoints = [
+    LoginController,
 ];
