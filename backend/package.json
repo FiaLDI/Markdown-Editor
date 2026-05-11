@@ -121,6 +121,6 @@
   },
   "devDependencies": {
     "@nestjs/testing": "^11.0.0",
-    "prisma": "^7.8.0"
+    "prisma": "^6.19.0"
   }
 }
