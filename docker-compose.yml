@@ -16,10 +16,9 @@ services:
   redis:
     image: redis:7
     container_name: markdown_redis
-    restart: always
     ports:
       - "6379:6379"
-    command: ["redis-server", "--appendonly", "yes"]
+    command: ["redis-server", "--appendonly", "yes", "--requirepass", "admin"]
 
 volumes:
   postgres_data:
