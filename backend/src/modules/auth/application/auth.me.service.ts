@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable } from '@nestjs/common';
+import { MeDto } from '@/api/v1/auth/dto/me.dto';
 
 @Injectable()
 export class AuthMeService {
-  getMe(): { message: string } {
-    return { message: 'Hello API from SERVICE 123' }
+  getMe(user: MeDto): MeDto {
+    return user;
   }
 }
