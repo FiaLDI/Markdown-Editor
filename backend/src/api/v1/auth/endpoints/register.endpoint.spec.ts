@@ -35,7 +35,7 @@ describe('RegisterEndpoint', () => {
         password: '123456',
       };
 
-      registerService.register.mockReturnValue('registered');
+      registerService.register.mockResolvedValue('registered');
 
       const result = await endpoint.register(input);
 
