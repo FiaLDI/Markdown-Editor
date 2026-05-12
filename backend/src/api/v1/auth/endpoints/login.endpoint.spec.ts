@@ -1,21 +1,42 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { LoginController } from './login.endpoint';
-import { AuthMeService } from '@/modules/auth/application/auth.me.service';
+import { LoginEndpoint } from './login.endpoint';
+import { LoginService } from '@/modules/auth/application/auth.login.service';
+import { LoginDto } from '../dto/login.dto';
 
-describe('LoginController', () => {
-  let app: TestingModule;
+describe('LoginEndpoint', () => {
+  let endpoint: LoginEndpoint;
+  let loginService: jest.Mocked<LoginService>;
 
   beforeAll(async () => {
-    app = await Test.createTestingModule({
-      controllers: [LoginController],
-      providers: [AuthMeService],
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        LoginEndpoint,
+        {
+          provide: LoginService,
+          useValue: {
+            login: jest.fn(),
+          },
+        },
+      ],
     }).compile();
+
+    endpoint = module.get<LoginEndpoint>(LoginEndpoint);
+    loginService = module.get(LoginService);
   });
 
-  describe('getData', () => {
-    it('should return "Hello API"', () => {
-      const loginController = app.get<LoginController>(LoginController);
-      expect(loginController.getData()).toEqual({ message: 'Hello API from SERVICE 123' });
+  describe('login', () => {
+    it('should call LoginService.login and return result', () => {
+      const input: LoginDto = {
+        email: 'test@mail.com',
+        password: '123456',
+      };
+
+      loginService.login.mockReturnValue('logged in');
+
+      const result = endpoint.login(input);
+
+      expect(loginService.login).toHaveBeenCalledWith(input);
+      expect(result).toBe('logged in');
     });
   });
 });

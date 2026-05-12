@@ -4,6 +4,6 @@ import { authV1Endpoints } from './endpoints';
 
 @Module({
   imports: [...authV1Imports],
-  controllers: [...authV1Endpoints],
+  providers: [...authV1Endpoints],
 })
 export class AuthV1ApiModule {}
