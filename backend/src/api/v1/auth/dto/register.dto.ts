@@ -6,5 +6,8 @@ export class RegisterDto {
   email!: string;
 
   @Field()
+  login!: string;
+
+  @Field()
   password!: string;
 }

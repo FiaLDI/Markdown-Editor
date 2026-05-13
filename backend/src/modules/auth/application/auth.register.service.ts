@@ -14,7 +14,7 @@ export class RegisterService {
     const passwordHash = await this.passwordService.hash(input.password);
 
     await this.userCreateService.createUser({
-      login: input.email,
+      login: input.login,
       email: input.email,
       passwordHash,
       createdAt: new Date(),
