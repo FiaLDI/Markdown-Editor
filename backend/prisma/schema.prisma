@@ -8,8 +8,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model block_reason {
-  id   Int    @id @default(autoincrement())
-  name String @db.VarChar(100)
+model User {
+  id           String   @id @default(uuid()) @db.Uuid
+  login        String?  @unique @db.VarChar(255)
+  email        String   @unique @db.VarChar(255)
+  passwordHash String?  @map("password_hash")
 
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
 }
