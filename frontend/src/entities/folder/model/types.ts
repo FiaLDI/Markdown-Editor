@@ -1,6 +1,7 @@
 interface BaseNode {
   name: string;
   path: string;
+  isShared?: boolean;
 }
 
 export interface FileEntry {

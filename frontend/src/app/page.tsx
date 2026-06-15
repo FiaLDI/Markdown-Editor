@@ -1,6 +1,7 @@
 import { Sidebar } from "@/widgets/Sidebar";
 import { ActiveTabs } from "@/widgets/ActiveTabs/ui/ActiveTabs";
 import { EditorPanel } from "@/widgets/EditorPanel";
+import { Notification } from "@/widgets/Notification";
 
 export default function Page() {
 
@@ -11,6 +12,7 @@ export default function Page() {
         <ActiveTabs />
         <EditorPanel />
       </section>
+      <Notification />
     </main>
   );
 }

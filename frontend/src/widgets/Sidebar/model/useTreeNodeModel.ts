@@ -11,6 +11,7 @@ export const useTreeNodeModel = ({ node, level = 0 }: TreeNodeProps) => {
   const { openFile } = useOpenFile();
 
   const isFolder = node.type === "folder";
+  const isShared = node.isShared === true;
   const expanded = expandedFolders.includes(node.path);
 
   return {
@@ -18,6 +19,7 @@ export const useTreeNodeModel = ({ node, level = 0 }: TreeNodeProps) => {
     toggleFolder, 
     select, 
     openFile, 
-    expanded
+    expanded,
+    isShared,
   }
 }

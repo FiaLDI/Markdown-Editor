@@ -7,8 +7,6 @@ import { getDialog } from "@/shared/lib/tauri/dialog/dialog.service";
 export const useOpenFile = () => {
   const { files, setFile, updateContent, markSaved } = useFileStore();
   const { activePath, openTab, setActive } = useTabStore();
-
-  // signal on save
   const [lastSaved, setLastSaved] = useState<string | null>(null);
 
   const activeFile = activePath ? files[activePath] : undefined;
