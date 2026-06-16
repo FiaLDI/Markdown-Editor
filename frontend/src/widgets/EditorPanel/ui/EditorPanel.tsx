@@ -25,6 +25,7 @@ export const EditorPanel = () => {
     activePath,
     updateContent,
   });
+
   return (
     <div className="flex flex-1 overflow-hidden">
       <textarea

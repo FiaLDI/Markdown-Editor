@@ -33,6 +33,7 @@ describe('RegisterEndpoint', () => {
       const input: RegisterDto = {
         email: 'test@mail.com',
         password: '123456',
+        login: 'test',
       };
 
       registerService.register.mockResolvedValue('registered');

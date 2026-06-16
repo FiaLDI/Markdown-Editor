@@ -3,6 +3,7 @@ import { FolderNode } from "./types";
 import { renameNode } from "../lib/renameNode";
 import { deleteNode } from "../lib/deleteNode";
 import { createNode } from "../lib/createNode";
+import { shareNode } from "../lib/shareTree";
 
 interface FolderTreeStore {
   tree?: FolderNode;
@@ -12,6 +13,7 @@ interface FolderTreeStore {
   deleteTreeNode: (path: string) => void;
   
   createTreeNode: (path: string, name: string, type: "folder" | "file") => void;
+  shareTreeNode: (path: string) => void;
 }
 
 export const useFolderTreeStore = create<FolderTreeStore>((set) => ({
@@ -43,5 +45,13 @@ export const useFolderTreeStore = create<FolderTreeStore>((set) => ({
       return {
         tree: createNode(state.tree, path, name, type) as FolderNode,
       }
-    })
+    }),
+  
+  shareTreeNode: (path) =>
+    set((state) => {
+      if (!state.tree) return state;
+      return {
+        tree: shareNode(state.tree, path) as FolderNode,
+      }
+    }),
 }));

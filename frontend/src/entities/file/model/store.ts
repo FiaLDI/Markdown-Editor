@@ -1,5 +1,3 @@
-// entities/file/model/file.store.ts
-
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -7,6 +5,25 @@ export interface File {
   path: string;
   content: string;
   savedContent: string;
+  isShared?: boolean;
+}
+
+export interface FileDto {
+  id: string;
+  filename: string;
+  url: string;
+  size: number;
+  createdAt: Date;
+  content?: fileStroke[];
+}
+
+export interface fileStroke {
+  id: string;
+  filename: string;
+  url: string;
+  size: number;
+  createdAt: Date;
+  content: string;
 }
 
 interface FileStore {
@@ -17,6 +34,7 @@ interface FileStore {
   markSaved: (path: string) => void;
   removeFile: (path: string) => void;
   getFile: (path: string) => File | undefined;
+  sharedFile: (path: string) => void;
 }
 
 export const useFileStore = create<FileStore>()(
@@ -81,6 +99,24 @@ export const useFileStore = create<FileStore>()(
 
       getFile: (path) => {
         return get().files[path];
+      },
+
+      sharedFile: (path) => {
+        set((state) => {
+          const file = state.files[path];
+          if (!file) return state;
+
+          return {
+            files: {
+              ...state.files,
+              [path]: {
+                ...file,
+                isShared: true,
+              },
+            },
+          };
+        });
+      
       },
     }),
     {

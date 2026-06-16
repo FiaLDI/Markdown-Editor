@@ -6,7 +6,7 @@ import { TreeNodeProps } from "../model/types";
 
 export const TreeNode = memo(({ node, level = 0, handleContextMenu }: TreeNodeProps) => {
   
-  const {isFolder, toggleFolder, select, openFile, expanded} = useTreeNodeModel({node, level});
+  const {isFolder, toggleFolder, select, openFile, expanded, isShared} = useTreeNodeModel({node, level});
 
   return (
     <div>
@@ -24,6 +24,7 @@ export const TreeNode = memo(({ node, level = 0, handleContextMenu }: TreeNodePr
         onContextMenu={(e) => {if(handleContextMenu) handleContextMenu(e, node.path)}}
       >
         {isFolder ? (expanded ? "📂" : "📁") : "📄"} {node.name}
+        {isShared && <span className="ml-1 text-xs text-blue-400">[Shared]</span>}
       </div>
 
       {isFolder &&

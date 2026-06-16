@@ -4,6 +4,8 @@ import { useRemoveFile } from "@/features/file/remove";
 import { useCreateFolder } from "@/features/folder/create";
 import { useCopyFileName } from "@/features/file/copy";
 import { useRenameFile } from "@/features/file/rename";
+import { useNotification } from "@/features/notification";
+import { useShareFile } from "@/features/file/shared/model/useSharedFile";
 
 export const useSidebarContextMenu = () => {
   const {
@@ -18,6 +20,8 @@ export const useSidebarContextMenu = () => {
   const removeFile = useRemoveFile();
   const renameFile = useRenameFile();
   const copyFile = useCopyFileName();
+  const notification = useNotification();
+  const shareFile = useShareFile();
 
   const getPath = () => contextMenu?.data;
 
@@ -88,6 +92,17 @@ export const useSidebarContextMenu = () => {
         if (!path) return;
 
         await copyFile.onCopyFileRelativeNameHandler(path);
+      },
+    } ,
+
+    {
+      label: "Share",
+      action: async () => {
+        const path = getPath();
+        if (!path) return;
+        await shareFile.onSharedFileHandler(path);
+
+        notification.notify(`Функция шаринга пока не реализована ${path}`);
       },
     },
   ];
