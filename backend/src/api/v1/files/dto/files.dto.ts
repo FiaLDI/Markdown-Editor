@@ -1,8 +1,15 @@
+import { Field, InputType } from '@nestjs/graphql';
 
-export interface FileDto {
-  id: string;
-  filename: string;
-  url: string;
-  size: number;
-  createdAt: Date;
+@InputType()
+export class FileDto {
+  @Field()
+  id!: string;
+  @Field()
+  filename!: string;
+  @Field()
+  url!: string;
+  @Field()
+  size!: number;
+  @Field()
+  createdAt!: Date;
 }
