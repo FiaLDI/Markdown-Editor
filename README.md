@@ -13,3 +13,15 @@ npx nx test @markdown/backend
 ```
 bash scripts/db-dev.sh init
 ```
+
+## Build
+```
+$env:NEXT_PUBLIC_GRAPHQL_ENDPOINT="http://localhost:4000/api/graphql"
+npm run tauri:build --workspace @markdown/desktop
+```
+
+## Dev
+```
+$env:NEXT_PUBLIC_GRAPHQL_ENDPOINT="http://localhost:4000/api/graphql"
+npm run tauri:dev --workspace @markdown/desktop
+```

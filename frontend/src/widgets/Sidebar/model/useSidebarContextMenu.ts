@@ -102,7 +102,7 @@ export const useSidebarContextMenu = () => {
         if (!path) return;
         await shareFile.onSharedFileHandler(path);
 
-        notification.notify(`Функция шаринга пока не реализована ${path}`);
+        notification.notify(`Функция шаринга пока полностью не реализована ${path}`);
       },
     },
   ];

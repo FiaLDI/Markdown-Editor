@@ -9,7 +9,13 @@ import { useRestoreWorkspace } from "../model/useRestoreWorkspace";
 
 export const Sidebar = () => {
   const tree = useFolderTreeStore((s) => s.tree);
-  const {contextMenu, items, menuRef, closeMenu, handleContextMenu} = useSidebarContextMenu();
+  const {
+    contextMenu, 
+    items, 
+    menuRef, 
+    closeMenu, 
+    handleContextMenu
+  } = useSidebarContextMenu();
   useRestoreWorkspace();
 
   useFileWatcher(tree?.path);

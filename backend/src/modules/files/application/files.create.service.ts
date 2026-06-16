@@ -7,7 +7,7 @@ export class FileCreateService {
 
   async createFile(fileData: any): Promise<any> {
     try {
-      const createdFile = await this.prisma.file.create({
+      await this.prisma.file.create({
         data: {
           filename: fileData.name,
           url: fileData.url,
